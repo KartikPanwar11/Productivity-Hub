@@ -1,5 +1,6 @@
 const Task = require('../Model/model')
 const wrapper = require('../Middleware/wrapper')
+const {createCustomError} = require('../Error/custom-error')
 
 //List all the tasks
 const getAllTasks = wrapper(async(req,res)=>{
@@ -18,7 +19,7 @@ const getTask =wrapper( async (req,res)=>{
         const {id:taskID} = req.params
         const task = await Task.findOne({_id:taskID})
         if(!task){
-            return res.status(404).json({msg: `No task with ID ${taskID}`})
+            return next(createCustomError(`No task with ID ${taskID}`,404))
         }
         res.status(200).json({task})
 })
@@ -31,7 +32,7 @@ const updateTask = wrapper(async (req,res)=>{
             runValidators:true
         })
     if(!task){
-            return res.status(404).json({msg: `No task with ID ${taskID}`})
+            return next(createCustomError(`No task with ID ${taskID}`,404))
         }
         res.status(200).json({task})
 })
@@ -41,7 +42,7 @@ const deleteTask = wrapper(async (req,res)=>{
         const {id:taskID} = req.params
         const task = await Task.findOneAndDelete({_id:taskID})
         if(!task){
-            return res.status(404).json({msg: `No task with ID ${taskID}`})
+            return next(createCustomError(`No task with ID ${taskID}`,404))
         }
         res.status(200).json({task})
     })

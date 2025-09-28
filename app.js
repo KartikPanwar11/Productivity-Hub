@@ -5,7 +5,7 @@ const connectDB = require('./database/connect')
 require('dotenv').config()
 const error = require('./Middleware/error')
 const errorHandler = require('./Middleware/erro-handler')
-const PORT = 5001
+const PORT = process.env.PORT || 5001
 
 
 //middleware
